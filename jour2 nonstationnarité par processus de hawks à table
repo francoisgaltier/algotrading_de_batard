@@ -1,2 +1,6 @@
 jour2 
 on part sur les procssus de hawkes  jai un article sympa stv :https://inria.hal.science/hal-02947341/file/Processus_de_hawkes1.pdf
+résumé:
+-un processus de poisson Nt compte le nombre d'évènementssuivant un eloi exponentielle qui se sont produits avant t 
+on note son intensité qui est le paramètre lambda de la loi exponentielle
+les poissons nont pas de mémoire. ca ca va nous poser problème pour avancer en tenant compte des investissements des autres
