@@ -1,0 +1,28 @@
+Limite de marches aléatoires :	On obtient le brownien comme limite fine d’une marche renormalisée (Donsker)
+Série sur base de Schauder :	On construit directement une trajectoire continue grâce à une série de fonctions et de variables normales
+Definition intrinsèque :	Chemin continu, 𝐵0=0, accroissements indépendants/gaussiens, variance = durée d’intervalle
+
+La mesure de Wiener est :
+-la mesure de probabilité sur les chemins continus partant de 0, définie par la loi du mouvement brownien ;
+-une mesure gaussienne infinie-dimensionnelle, avec incréments indépendants et variance proportionnelle au temps ;
+-construite sur l’espace de Banach 
+𝐶0, avec la tribu engendrée par les évaluations temporelles.
+
+Propriétés d'un mouvement brownien : 
+Espérance 0	-> Pas de dérive, trajectoires centrées
+Incréments gaussiens ->	Mouvements « aléatoires » proportionnels à la √(durée)
+Stationnarité ->	Même loi selon la durée, pas selon le moment
+Indépendance ->	Le futur n'affecte pas le passé et vice versa 
+Continuité ->	Pas de « sauts » soudains
+Non dérivabilité ->	Mouvement trop irrégulier pour avoir une pente
+Symétrie ->	Comportement équivalent partagé vers le haut ou le bas
+Auto-similarité ->	Forme auto-réproduite à différentes échelles
+Covariance = min(s,t) ->	Corrélation naturelle par chevauchement temporel
+Variation quadratique ->	Outil fondamental pour itô-integrale
+
+La propriété de Markov forte affirme que dans un processus, dès qu’on s’arrête à un instant aléatoire, on peut redémarrer à partir de là, indépendamment du passé, comme si on recommençait le processus.
+
+Fonction harmonique :	Satisfait Δ𝑢=0, moyenne locale, principe du maximum
+Problème de Dirichlet	: Trouver 𝑢 harmonique 
+Méthode de Perron : 	Basée sur la théorie des sous-harmoniques
+Approche via Brownien	𝑢(𝑥)=𝐸𝑥[𝜑(𝐵𝜏𝐷)], solution probabiliste

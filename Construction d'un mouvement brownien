@@ -1,3 +1,0 @@
-Limite de marches aléatoires :	On obtient le brownien comme limite fine d’une marche renormalisée (Donsker)
-Série sur base de Schauder :	On construit directement une trajectoire continue grâce à une série de fonctions et de variables normales
-Definition intrinsèque :	Chemin continu, 𝐵0=0, accroissements indépendants/gaussiens, variance = durée d’intervalle
