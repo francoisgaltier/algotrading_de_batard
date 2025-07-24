@@ -5,6 +5,7 @@ import numpy as np
 from scipy.stats import norm
 from outils import call
 from outils import put
+from outils import calcul_delta 
 #on va faire intervenir de l'aléatoire 
 #partons du principe que le prix du sous jacent va varier selon une marche aléatoire psk cest trop dur sinon
 #grille de temps
@@ -41,7 +42,12 @@ print(traj_moyenne)
 call_prices_r = [call(s, K, r, sigma, T) for s in traj_moyenne]
 for traj in tableau:
     plt.plot(temps,traj,alpha=0.2, color='gray')
-
+delta = [calcul_delta(S,K,r,sigma,T,)for S in traj_moyenne]
+delta_hedge = []
+for i in range (len(temps)):
+        a = delta[i] - delta[i-1]
+        delta_hedge.append(a)
+print(delta_hedge)
 plt.plot(temps,traj_moyenne,color = 'r')
 plt.plot(temps,call_prices_r,color = 'b')
 plt.grid()
