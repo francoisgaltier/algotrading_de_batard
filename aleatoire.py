@@ -42,12 +42,17 @@ print(traj_moyenne)
 call_prices_r = [call(s, K, r, sigma, T) for s in traj_moyenne]
 for traj in tableau:
     plt.plot(temps,traj,alpha=0.2, color='gray')
-delta = [calcul_delta(S,K,r,sigma,T,)for S in traj_moyenne]
+"""delta = [calcul_delta(S,K,r,sigma,T,)for S in traj_moyenne]
 delta_hedge = []
-for i in range (len(temps)):
+for i in range (1,len(temps)):
         a = delta[i] - delta[i-1]
         delta_hedge.append(a)
 print(delta_hedge)
+portfolio = []
+cash = []
+def update_portfolio(delta,S,C):
+       return -delta*S+C+cash"""
+
 plt.plot(temps,traj_moyenne,color = 'r')
 plt.plot(temps,call_prices_r,color = 'b')
 plt.grid()
