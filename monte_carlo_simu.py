@@ -1,4 +1,4 @@
-on simule 50 trajectoires et on moyenne chaque colonne pour obtenir une trajectoire mean :
+#on simule 50 trajectoires et on moyenne chaque colonne pour obtenir une trajectoire mean :
 import tkinter as tk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
