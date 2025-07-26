@@ -1,43 +1,129 @@
-#on simule 50 trajectoires et on moyenne chaque colonne pour obtenir une trajectoire mean :
-import tkinter as tk
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import matplotlib.pyplot as plt
 import numpy as np
-from scipy.stats import norm
-#on va faire intervenir de l'aléatoire 
-#partons du principe que le prix du sous jacent va varier selon une marche aléatoire psk cest trop dur sinon
-#grille de temps
-mu = 0.05
-sigma = 0.5
-n_steps = 100
-temps = np.linspace(1,100,n_steps+1)
-T = 1
-dt = T/n_steps
-N = 50
-S0 = 50
-S = [S0]
-tableau = []
-for _ in range (N):
-    S = [S0]
-    for _ in range (n_steps):
-                Z = np.random.normal(0,1)
-                Snew = S[-1]*np.exp((mu-(sigma**2)/2)*dt +sigma * np.sqrt(dt) * Z)
-                S.append(Snew)
-    tableau.append(S)
-#print([f"{float(x):.2f}" for x in S])
-#print(tableau)
-#maintenant on va faire la somme de chaque colonne qu'on va iunsérer dans un tableau
-traj_moyenne = []
-for k in range (n_steps+1):
-        colonne_k = [ligne[k]for ligne in tableau]
-        moyenne = sum(colonne_k)/len(colonne_k)
-        traj_moyenne.append(moyenne)
-print(traj_moyenne)
-for traj in tableau:
-    plt.plot(temps,traj,alpha=0.2, color='gray')
-plt.plot(temps,traj_moyenne,color = 'r')
-plt.grid()
-plt.title('monte carlo trajctoire à vol constante')
-plt.show()
-    
+import matplotlib.pyplot as plt
+from typing import List
 
+
+class AssetPriceSimulator:
+    """
+    Class responsible for simulating asset prices using geometric Brownian motion.
+    # (FR) Classe responsable de la simulation des prix d’un actif via un mouvement brownien géométrique.
+    """
+
+    def __init__(self, initial_price: float, mu: float, sigma: float, total_time: float, num_steps: int):
+        """
+        Initialize model parameters.
+        # (FR) Initialiser les paramètres du modèle.
+        """
+        self.initial_price = initial_price
+        self.mu = mu
+        self.sigma = sigma
+        self.total_time = total_time
+        self.num_steps = num_steps
+        self.dt = total_time / num_steps
+        self.time_grid = np.linspace(0, total_time, num_steps + 1)
+
+    def generate_single_trajectory(self) -> List[float]:
+        """
+        Generate a single asset price trajectory.
+        # (FR) Générer une seule trajectoire du prix de l’actif.
+        """
+        prices = [self.initial_price]
+
+        for _ in range(self.num_steps):
+            # Generate a random shock from normal distribution
+            # (FR) Générer un choc aléatoire selon une loi normale
+            random_shock = np.random.normal(0, 1)
+
+            # Drift term represents expected return over time
+            # (FR) Le terme de drift représente le rendement moyen attendu dans le temps
+            drift = (self.mu - 0.5 * self.sigma ** 2) * self.dt
+
+            # Diffusion term represents randomness/volatility
+            # (FR) Le terme de diffusion représente l’aléa, c’est-à-dire la volatilité
+            diffusion = self.sigma * np.sqrt(self.dt) * random_shock
+
+            # Update the price using geometric Brownian motion formula
+            # (FR) Mise à jour du prix avec la formule du mouvement brownien géométrique
+            new_price = prices[-1] * np.exp(drift + diffusion)
+            prices.append(new_price)
+
+        return prices
+
+    def generate_multiple_trajectories(self, num_trajectories: int) -> List[List[float]]:
+        """
+        Generate multiple price trajectories.
+        # (FR) Générer plusieurs trajectoires de prix.
+        """
+        return [self.generate_single_trajectory() for _ in range(num_trajectories)]
+
+
+class TrajectoryAnalyzer:
+    """
+    Class for analyzing multiple trajectories.
+    # (FR) Classe pour analyser plusieurs trajectoires.
+    """
+
+    @staticmethod
+    def compute_mean_trajectory(trajectories: List[List[float]]) -> List[float]:
+        """
+        Compute the average trajectory across all simulations.
+        # (FR) Calculer la trajectoire moyenne parmi toutes les simulations.
+        """
+        return list(np.mean(trajectories, axis=0))
+
+
+class TrajectoryPlotter:
+    """
+    Class responsible for visualizing the trajectories.
+    # (FR) Classe responsable de la visualisation des trajectoires.
+    """
+
+    @staticmethod
+    def plot_trajectories(time_grid: np.ndarray, trajectories: List[List[float]], mean_trajectory: List[float]) -> None:
+        """
+        Plot all trajectories and the mean trajectory.
+        # (FR) Tracer toutes les trajectoires ainsi que la trajectoire moyenne.
+        """
+        for traj in trajectories:
+            plt.plot(time_grid, traj, alpha=0.2, color='gray')  # light gray for individual paths
+            # (FR) gris clair pour les trajectoires individuelles
+        plt.plot(time_grid, mean_trajectory, color='red', label='Mean Trajectory')
+        # (FR) en rouge : la trajectoire moyenne
+        plt.title('Asset Price Simulation (Monte Carlo with Constant Volatility)')
+        # (FR) Simulation du prix d’un actif (Monte Carlo avec volatilité constante)
+        plt.xlabel('Time')
+        plt.ylabel('Asset Price')
+        plt.grid(True)
+        plt.legend()
+        plt.show()
+
+
+def main():
+    # Simulation parameters
+    # (FR) Paramètres de simulation
+    initial_price = 50.0
+    mu = 0.05
+    sigma = 0.5
+    total_time = 1.0
+    num_steps = 100
+    num_trajectories = 50
+
+    # Create simulator object
+    # (FR) Créer un objet simulateur
+    simulator = AssetPriceSimulator(initial_price, mu, sigma, total_time, num_steps)
+
+    # Generate asset price trajectories
+    # (FR) Générer les trajectoires du prix de l’actif
+    trajectories = simulator.generate_multiple_trajectories(num_trajectories)
+
+    # Compute average trajectory
+    # (FR) Calculer la trajectoire moyenne
+    mean_trajectory = TrajectoryAnalyzer.compute_mean_trajectory(trajectories)
+
+    # Plot the results
+    # (FR) Afficher les résultats
+    TrajectoryPlotter.plot_trajectories(simulator.time_grid, trajectories, mean_trajectory)
+
+
+if __name__ == '__main__':
+    main()
